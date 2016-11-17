@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:background="#FFFFA0">
+
+    <ImageView
+        android:id="@+id/NotificationIcon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:src="@drawable/ic_launcher"
+        android:gravity="center"
+        android:padding="10dp"
+        android:clickable="true"
+        android:background="@drawable/default_item_selector" />
+
+    <TextView
+        android:id="@+id/NotificationText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:clickable="true"
+        android:text="最新版本已发布，请及时升级！"
+        android:background="@drawable/default_item_selector" />
+    <ImageView
+        android:id="@+id/Close"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:gravity="center"
+        android:padding="10dp"
+        android:clickable="true"
+        android:background="@drawable/default_item_selector" />
+</LinearLayout>
+

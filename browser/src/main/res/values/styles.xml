@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <!-- 由下向上动画 -->
+    <style name="menu_dialog_Animation" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/enter </item>
+        <item name="@android:windowExitAnimation">@anim/exit </item>
+    </style>
+
+    <!-- 有上向下动画 -->
+    <style name="dialog_Animation_up_down" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/enter_from_up</item>
+        <item name="@android:windowExitAnimation">@anim/push_up_out</item>
+    </style>
+</resources>

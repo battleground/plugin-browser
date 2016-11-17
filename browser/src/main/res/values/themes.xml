@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 应用统一风格的ActionBar主题 -->
+    <style name="Theme.AppDarkActionBar" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/AppActionBarStyle</item>
+    </style>
+
+    <!-- Overlay模式ActionBar -->
+    <style name="Theme.OverlayActionBar" parent="@style/Theme.AppDarkActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowContentOverlay">@null</item> <!-- 去掉actionBar底部的渐变阴影 -->
+    </style>
+
+    <!-- Overlay模式ActionBar背景透明 -->
+    <style name="Theme.OverlayActionBarTransparent" parent="@style/Theme.OverlayActionBar">
+        <item name="android:background">@drawable/TRANSPARENT</item>
+
+        <!-- Support library compatibility -->
+        <!-- <item name="windowActionBarOverlay" tools:targetApi="11">true</item> -->
+    </style>
+
+    <!-- 应用统一风格的ActionBar：自定义背景、返回icon、文本 -->
+    <style name="AppActionBarStyle" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/actionbar_background</item>
+        <item name="android:backgroundSplit">@color/actionbar_background</item>
+        <item name="android:titleTextStyle">@style/AppActionBar.TitleTextStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_browser_back_nor</item>
+    </style>
+
+    <!-- ActionBar标题文本 -->
+    <style name="AppActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#f0ffffff</item>
+    </style>
+
+</resources>
