@@ -1,15 +1,18 @@
 apply plugin: 'maven'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 def isReleaseBuild() {
     return VERSION_NAME.contains("SNAPSHOT") == false
 }
 
 def getRepositoryUsername() {
-    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+    return properties.getProperty("nexus.username")
 }
 
 def getRepositoryPassword() {
-    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+    return properties.getProperty("nexus.password")
 }
 
 afterEvaluate { project ->
@@ -19,27 +22,27 @@ afterEvaluate { project ->
                 pom.groupId = groupId
                 pom.artifactId = artifactId
                 pom.version = version
-                repository(url: RELEASE_REPOSITORY_URL) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                repository(url: properties.getProperty("nexus.RELEASE_REPOSITORY_URL")) {
+                    authentication(userName: properties.getProperty("nexus.username"), password: properties.getProperty("nexus.password"))
                 }
-                snapshotRepository(url: SNAPSHOT_REPOSITORY_URL) {
-                    authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+                snapshotRepository(url: properties.getProperty("nexus.SNAPSHOT_REPOSITORY_URL")) {
+                    authentication(userName: properties.getProperty("nexus.username"), password: properties.getProperty("nexus.password"))
                 }
             }
         }
     }
-    task androidJavadocs(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-        classifier = 'javadoc'
-        from androidJavadocs.destinationDir
-    }
-    task androidSourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.sourceFiles
-    }
+//    task androidJavadocs(type: Javadoc) {
+//        source = android.sourceSets.main.java.srcDirs
+//        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    }
+//    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+//        classifier = 'javadoc'
+//        from androidJavadocs.destinationDir
+//    }
+//    task androidSourcesJar(type: Jar) {
+//        classifier = 'sources'
+//        from android.sourceSets.main.java.sourceFiles
+//    }
     artifacts {
 //        archives androidSourcesJar
 //        archives androidJavadocsJar
