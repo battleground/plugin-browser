@@ -7,14 +7,6 @@ def isReleaseBuild() {
     return VERSION_NAME.contains("SNAPSHOT") == false
 }
 
-def getRepositoryUsername() {
-    return properties.getProperty("nexus.username")
-}
-
-def getRepositoryPassword() {
-    return properties.getProperty("nexus.password")
-}
-
 afterEvaluate { project ->
     uploadArchives {
         repositories {
@@ -22,29 +14,62 @@ afterEvaluate { project ->
                 pom.groupId = groupId
                 pom.artifactId = artifactId
                 pom.version = version
-                repository(url: properties.getProperty("nexus.RELEASE_REPOSITORY_URL")) {
-                    authentication(userName: properties.getProperty("nexus.username"), password: properties.getProperty("nexus.password"))
+
+                def String server = properties.getProperty("nexus.REPOSITORY_SERVER")
+                String snapshot_url = server + REPOSITORY_SNAPSHOTS;
+                String releases_url = server + REPOSITORY_RELEASES;
+                println('-----------------START----------------')
+                println snapshot_url
+                println releases_url
+
+                def String username = properties.getProperty("nexus.username");
+                def String password = properties.getProperty("nexus.password");
+                println(username + ", " + password)
+
+                repository(url: releases_url) {
+                    authentication(userName: username, password: password)
                 }
-                snapshotRepository(url: properties.getProperty("nexus.SNAPSHOT_REPOSITORY_URL")) {
-                    authentication(userName: properties.getProperty("nexus.username"), password: properties.getProperty("nexus.password"))
+                snapshotRepository(url: snapshot_url) {
+                    authentication(userName: username, password: password)
                 }
             }
         }
     }
-//    task androidJavadocs(type: Javadoc) {
-//        source = android.sourceSets.main.java.srcDirs
-//        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//    }
-//    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-//        classifier = 'javadoc'
-//        from androidJavadocs.destinationDir
-//    }
-//    task androidSourcesJar(type: Jar) {
-//        classifier = 'sources'
-//        from android.sourceSets.main.java.sourceFiles
-//    }
+
+    boolean doc_enable = java.lang.Boolean.valueOf(java_doc_enable)
+    boolean source_enable = java.lang.Boolean.valueOf(java_source_enable)
+
+    if (doc_enable) {
+        task androidJavadocs(type: Javadoc) {
+            source = android.sourceSets.main.java.srcDirs
+            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        }
+        task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+            classifier = 'javadoc'
+            from androidJavadocs.destinationDir
+        }
+    }
+
+    if (source_enable) {
+        task androidSourcesJar(type: Jar) {
+            classifier = 'sources'
+            from android.sourceSets.main.java.sourceFiles
+        }
+    }
+
     artifacts {
-//        archives androidSourcesJar
-//        archives androidJavadocsJar
+        println 'groupId:' + groupId
+        println 'artifactId:' + artifactId
+        println 'version:' + version
+        println '支持源码:' + java_source_enable
+        println '支持文档:' + java_doc_enable
+        println '-----------------END----------------'
+
+        if (source_enable) {
+            archives androidSourcesJar
+        }
+        if (doc_enable) {
+            archives androidJavadocsJar
+        }
     }
 }
