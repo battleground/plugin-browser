@@ -8,13 +8,10 @@ buildscript {
     }
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
 allprojects {
 
     repositories {
         jcenter()
-        maven { url (properties.getProperty("nexus.REPOSITORY_SERVER") + 'repository/maven-public/') }
+        maven { url ('http://192.168.1.111:8081/' + 'repository/maven-public/') }
     }
 }
